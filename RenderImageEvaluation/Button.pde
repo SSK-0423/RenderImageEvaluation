@@ -32,12 +32,14 @@ class Button {
 
   void display() {
     changeColor();
+    strokeWeight(2);
     rectMode(CENTER);
     rect(pos.x, pos.y, w, h);
     
+    textAlign(CENTER,CENTER);
     fill(0);
     textSize(20);
-    text(str, pos.x-20, pos.y+10);
+    text(str, pos.x, pos.y);
   }
 
   boolean checkInMouse() {

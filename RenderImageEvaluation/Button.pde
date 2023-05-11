@@ -21,7 +21,7 @@ class Button {
     col = col_;
     str = str_;
     state = 0;
-    nb=1; //normalBrightness
+    nb=1;   //normalBrightness
     sb=0.8; //selectBrightness
     pb=0.6; //pushBrightness
   }

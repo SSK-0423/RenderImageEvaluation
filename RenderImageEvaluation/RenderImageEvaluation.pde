@@ -5,6 +5,8 @@ int imgW;
 int imgH;
 Mouse mouse;
 Button calcButton;
+Button viewSimilarityButton;
+
 Button loadRenderImgButton;
 Button loadReferenceImgButton;
 
@@ -18,13 +20,15 @@ void setup() {
   imgW = width/3;
   imgH = width/3;
 
-  renderImg = new Sprite(width/10 + imgW/2, height/20 + imgH/2, imgW, imgH);
+  renderImg = new Sprite(width/10 + imgW/2, height/50 + imgH/2, imgW, imgH);
 
-  referenceImg = new Sprite(width - width/10 - imgW/2, height/20 + imgH/2, imgW, imgH);
+  referenceImg = new Sprite(width - width/10 - imgW/2, height/50 + imgH/2, imgW, imgH);
 
   mouse = new Mouse();
 
-  calcButton = new Button(width/2, height - height/10, 100, 40, color(255, 255, 255), "Calculate");
+  calcButton = new Button(width/2, height - height/6, 100, 40, color(255, 255, 255), "Calculate");
+  viewSimilarityButton = new Button(width/2, height - height/19, 140, 40, color(255, 255, 255), "ViewSimilarity");
+  
   loadRenderImgButton = new Button(renderImg.pos.x+5, height - height/10, 200, 40, color(255, 255, 255), "Load Render Image");
   loadReferenceImgButton = new Button(referenceImg.pos.x+10, height - height/10, 200, 40, color(255, 255, 255), "Load Reference Image");
 
@@ -35,12 +39,16 @@ void setup() {
 void update() {
   mouse.update();
   calcButton.update(mouse);
+  viewSimilarityButton.update(mouse);
   loadRenderImgButton.update(mouse);
   loadReferenceImgButton.update(mouse);
 
   // ボタンが押されたら
   if (calcButton.isClicked()) {
     onClickCalcButton();
+  }
+  if(viewSimilarityButton.isClicked()){
+    onClickViewSimilarityButton();
   }
   if (loadRenderImgButton.isClicked()) {
     onClickRenderImgButton();
@@ -69,6 +77,7 @@ void draw() {
 
   // ボタン表示
   calcButton.display();
+  viewSimilarityButton.display();
   loadRenderImgButton.display();
   loadReferenceImgButton.display();
 }
@@ -106,6 +115,28 @@ void calcCosineSimilarity() {
   }
   // 平均値を類似度とする
   similarity /= (imgW * imgH);
+}
+
+void onClickViewSimilarityButton() {
+    // nullチェック
+  if (renderImg.img == null || referenceImg.img == null) {
+    return;
+  }
+  
+  for (int y = 0; y < imgH; y++) {
+    for (int x = 0; x < imgW; x++) {
+      int similarityCol = int(cosList[int(imgW) * y + x] * 255.0);
+      colorMode(RGB,255);
+      color col;
+      if(similarityCol < 255 * 0.9){
+        similarityCol = 0;
+      }else{
+        similarityCol = 255;
+      }
+      col = color(similarityCol);
+      renderImg.setPixel(x,y,col);
+    }
+  }
 }
 
 void onClickRenderImgButton() {

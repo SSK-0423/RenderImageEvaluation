@@ -14,6 +14,7 @@ class Sprite {
 
   void loadImg(String path) {
     img = loadImage(path);
+    img.resize(int(w),int(h));
   }
 
   void display() {
@@ -32,5 +33,9 @@ class Sprite {
 
   color getPixel(int x, int y) {
     return img.get(x, y);
+  }
+  
+  void setPixel(int x, int y, color col){
+    img.set(x,y,col);
   }
 }
